@@ -141,10 +141,10 @@ resource "azurerm_windows_virtual_machine" "vm" {
   }
 
   source_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2022-datacenter-azure-edition"
-    version   = "latest"
+    publisher = var.windows_os_publisher
+    offer     = var.windows_os_offer
+    sku       = var.windows_os_sku
+    version   = var.windows_os_version
   }
 
   custom_data = base64encode(local.powershell_setup)
@@ -175,5 +175,6 @@ resource "local_file" "rdp_file" {
     username:s:${var.admin_username}
     prompt for credentials:i:1
     administrative session:i:1
+    screen mode id:i:2
   EOT
 }

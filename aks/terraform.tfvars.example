@@ -1,0 +1,20 @@
+# ==============================================================================
+# AKS & ACR Configuration (Optional Override)
+# ==============================================================================
+
+# Resource Group (Leave empty for auto-detection in KodeKloud Sandbox)
+# resource_group_name = "kml_rg_main-xxxx"
+
+# Region
+# location = "eastus"
+
+# ACR Settings
+# acr_name = "" # Alphanumeric only, leave empty to auto-generate
+# acr_sku  = "Basic"
+
+# AKS Cluster Settings
+# aks_cluster_name      = "aks-kodekloud"
+# aks_dns_prefix        = "" # Leave empty to auto-generate
+# kubernetes_version    = "" # Leave empty for Azure AKS latest default
+# aks_vm_size           = "Standard_D2s_v3" # Standard_D2s_v3 required by KodeKloud sandbox policy
+# aks_system_node_count = 1

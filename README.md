@@ -79,7 +79,7 @@ az account set --subscription "<SUBSCRIPTION_ID>"   # only if you have more than
 You can run each component **completely separately** based on what you need to practice. Each has its own dedicated Terraform state and will not interfere with the others:
 
 ### 1) AKS & ACR: `./aks-setup.sh`
-Provisions Azure Container Registry (ACR) and Azure Kubernetes Service (AKS) with `Standard_B2s` nodes, `kubenet` networking, pre-configured `acr-secret` in Kubernetes, and auto-detects your sandbox resource group:
+Provisions Azure Container Registry (ACR) and Azure Kubernetes Service (AKS) with `Standard_D2s_v3` nodes (strictly compliant with KodeKloud sandbox Azure Policy), `kubenet` networking, pre-configured `acr-secret` in Kubernetes, and auto-detects your sandbox resource group:
 ```bash
 ./aks-setup.sh            # Provision ACR & AKS
 ./aks-setup.sh --status   # Check cluster and node status
@@ -96,12 +96,18 @@ Provisions an Ubuntu 22.04 LTS VM (`Standard_B2s`, 2 vCPU, 4GB RAM) with Docker,
 ```
 
 ### 3) Windows Server VM: `./windows-vm.sh`
-Provisions a Windows Server 2022 Datacenter VM (`Standard_B2s`, 2 vCPU, 4GB RAM) with RDP (3389) and OpenSSH (22) enabled, an auto-generated secure password, and ready-to-use `.rdp` connection file:
+Provisions a Windows Server 2022 Datacenter VM (`Standard_B2s` or `Standard_D2s_v3`) with RDP (3389) and OpenSSH (22) enabled, auto-generated secure password, and ready-to-use `.rdp` connection shortcut:
 ```bash
 ./windows-vm.sh            # Provision Windows VM
 ./windows-vm.sh --status   # Check VM status and public IP
 ./windows-vm.sh --destroy  # Tear down only Windows VM
 ```
+
+**Connecting to Windows VM:**
+- **Double click:** Open the generated `vm-windows.rdp` file directly (pre-configured for full-screen session).
+- **Windows mstsc:** `mstsc /v:<PUBLIC_IP>`
+- **Linux:** `xfreerdp /v:<PUBLIC_IP> /u:azureuser /p:<PASSWORD>`
+- **OpenSSH:** `ssh azureuser@<PUBLIC_IP>` (OpenSSH server is automatically configured)
 
 ---
 
