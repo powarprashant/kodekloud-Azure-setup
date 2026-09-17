@@ -37,10 +37,10 @@
 # aks_cluster_name          = "aks-kodekloud"
 # aks_dns_prefix            = ""   # leave empty to auto-generate
 # kubernetes_version        = ""   # leave empty for the AKS default
-# aks_vm_size               = "Standard_B2s"
+# aks_vm_size               = "Standard_D2s_v3"
 # aks_system_node_count     = 1
 # aks_enable_user_node_pool = false
-# aks_user_vm_size          = "Standard_B2s"
+# aks_user_vm_size          = "Standard_D2s_v3"
 # aks_user_node_count       = 1
 # aks_network_plugin        = "kubenet"
 # enable_acr_role_assignment = false   # enable only if your subscription allows role assignments

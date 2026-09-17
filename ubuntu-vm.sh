@@ -98,9 +98,11 @@ if [[ "${1:-}" == "--ssh" ]]; then
     echo -e "${RED}ERROR: VM IP or private key not found.${NC}"
     exit 1
   fi
-  chmod 600 "$KEY_FILE"
+  mkdir -p ~/.ssh
+  cp -f "$KEY_FILE" ~/.ssh/vm-ubuntu_key.pem
+  chmod 600 ~/.ssh/vm-ubuntu_key.pem
   echo -e "${CYAN}Connecting to azureuser@${PUBLIC_IP}...${NC}"
-  ssh -i "$KEY_FILE" -o StrictHostKeyChecking=no "azureuser@${PUBLIC_IP}"
+  ssh -i ~/.ssh/vm-ubuntu_key.pem -o StrictHostKeyChecking=no "azureuser@${PUBLIC_IP}"
   exit 0
 fi
 

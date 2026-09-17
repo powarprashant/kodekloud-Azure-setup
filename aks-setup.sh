@@ -11,7 +11,7 @@
 #   ./aks-setup.sh --destroy  # Tear down ACR & AKS only
 # ==============================================================================
 
-set -uo pipefail
+set -euo pipefail
 
 RED="\e[0;31m"
 GREEN="\e[0;32m"

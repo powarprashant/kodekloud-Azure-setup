@@ -199,8 +199,8 @@ variable "kubernetes_version" {
 
 variable "aks_vm_size" {
   type        = string
-  description = "VM SKU for the AKS system node pool. Standard_B2s is confirmed to work in the KodeKloud Azure Sandbox."
-  default     = "Standard_B2s"
+  description = "VM SKU for the AKS system node pool. Standard_D2s_v3 is required by KodeKloud sandbox policy."
+  default     = "Standard_D2s_v3"
 }
 
 variable "aks_system_node_count" {
