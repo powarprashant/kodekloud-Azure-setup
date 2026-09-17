@@ -1,0 +1,40 @@
+# Optional example: deploy nginx from ACR to prove the AKS <-> ACR
+# integration works end-to-end. Not applied automatically by Terraform.
+#
+# Usage:
+#   ACR_SERVER=$(terraform output -raw acr_login_server)
+#   docker pull nginx:latest
+#   docker tag nginx:latest ${ACR_SERVER}/nginx:latest
+#   az acr login --name $(terraform output -raw acr_name)
+#   docker push ${ACR_SERVER}/nginx:latest
+#
+#   sed -i "s#<ACR_LOGIN_SERVER>#${ACR_SERVER}#" examples/nginx/deployment.yaml
+#   kubectl apply -f examples/nginx/deployment.yaml
+#   kubectl apply -f examples/nginx/service.yaml
+#
+# If enable_acr_role_assignment=false (KodeKloud Sandbox default), first
+# create the imagePullSecret described in docs/sandbox-notes.md and
+# uncomment imagePullSecrets below.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-demo
+  labels:
+    app: nginx-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-demo
+  template:
+    metadata:
+      labels:
+        app: nginx-demo
+    spec:
+      # imagePullSecrets:
+      #   - name: acr-pull-secret
+      containers:
+        - name: nginx
+          image: <ACR_LOGIN_SERVER>/nginx:latest
+          ports:
+            - containerPort: 80

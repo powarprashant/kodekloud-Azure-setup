@@ -1,0 +1,14 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform.lock.hcl
+terraform.tfvars
+*.tfplan
+tfplan.out
+*.pem
+*_ssh_key*
+kubeconfig
+.env
+.vscode/
+.idea/

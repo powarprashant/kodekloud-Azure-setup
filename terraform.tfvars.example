@@ -1,0 +1,48 @@
+# Copy this file to terraform.tfvars and adjust as needed.
+# Every value below already has a KodeKloud Azure Sandbox-friendly
+# default in variables.tf - you can deploy with an empty tfvars file.
+
+# subscription_id = ""   # leave empty to use `az account set` selection
+
+# location     = "eastus"
+# environment  = "kodekloud"
+# project_name = "kodekloud"
+
+# --- Resource Group ---
+# KodeKloud Sandbox: leave both as-is to auto-detect the pre-provisioned RG.
+# create_resource_group = false
+# resource_group_name   = ""
+
+# --- Networking ---
+# vnet_address_space        = ["10.0.0.0/16"]
+# aks_subnet_address_prefix = ["10.0.1.0/24"]
+# vm_subnet_address_prefix  = ["10.0.2.0/24"]
+# ssh_allowed_cidr          = "*"   # restrict to "<your-ip>/32" if possible
+
+# --- VM ---
+# vm_name            = "vm-kodekloud"
+# vm_size            = "Standard_B1s"
+# vm_admin_username  = "azureuser"
+# vm_os_disk_type    = "StandardSSD_LRS"
+# vm_enable_public_ip = true
+# ssh_public_key     = ""   # leave empty to auto-generate a keypair
+# vm_enable_acr_role_assignment = false   # grant the VM's identity AcrPull access; needs role-assignment permissions
+
+# --- ACR ---
+# acr_name          = ""   # leave empty to auto-generate a unique name
+# acr_sku           = "Basic"
+# acr_admin_enabled = true
+
+# --- AKS ---
+# aks_cluster_name          = "aks-kodekloud"
+# aks_dns_prefix            = ""   # leave empty to auto-generate
+# kubernetes_version        = ""   # leave empty for the AKS default
+# aks_vm_size               = "Standard_B2s"
+# aks_system_node_count     = 1
+# aks_enable_user_node_pool = false
+# aks_user_vm_size          = "Standard_B2s"
+# aks_user_node_count       = 1
+# aks_network_plugin        = "kubenet"
+# enable_acr_role_assignment = false   # enable only if your subscription allows role assignments
+
+# tags = {}
