@@ -122,6 +122,7 @@ KodeKloud sandbox specifically** - test with a plan before relying on it.
 | `ResourceProviderNotRegistered` | `Microsoft.ContainerService`, `Microsoft.ContainerRegistry`, `Microsoft.Compute`, or `Microsoft.Network` isn't registered on the subscription | Try `az provider register --namespace Microsoft.ContainerService` (etc.) - if that itself fails with `AuthorizationFailed`, the sandbox likely pre-registers what it allows; retry the apply, since many sandboxes auto-register on first use |
 | `InsufficientFreeAddresses` | The AKS or VM subnet ran out of IPs (common with Azure CNI) | Use `kubenet`, shrink `aks_system_node_count`, or widen the subnet's address prefix |
 | `RoleAssignmentFailed` | Same root cause as `AuthorizationFailed` on a role assignment | Same fallback: disable the role assignment, use the ACR admin-credential path |
+| `RequestDisallowedByPolicy` | Azure Policy enforced by KodeKloud sandbox (e.g. AKS VM size must be `Standard_D2s_v3`, max 1 node pool, container insights disabled) | Use `Standard_D2s_v3` for AKS, max 1 node pool, and keep container insights disabled |
 | `InvalidTemplateDeployment` / `OperationNotAllowed` | Sandbox policy blocking a specific resource property (e.g. disk SKU, VM size tier) | Read the inner error message it wraps - it usually names the exact blocked property |
 
 ## Resources deliberately NOT used
