@@ -29,7 +29,7 @@ if ! command -v terraform >/dev/null 2>&1; then
   echo -e "${RED}terraform is not installed.${NC}"
   err=1
 else
-  echo -e "${GREEN}- terraform found: $(terraform version -json 2>/dev/null | grep -o '"terraform_version":"[^"]*"' | cut -d'"' -f4)${NC}"
+  echo -e "${GREEN}- terraform found: $(terraform version -json 2>/dev/null | grep -oE '"terraform_version"\s*:\s*"[^"]*"' | cut -d'"' -f4)${NC}"
 fi
 
 if ! command -v kubectl >/dev/null 2>&1; then

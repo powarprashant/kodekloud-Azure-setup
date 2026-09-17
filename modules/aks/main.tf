@@ -54,7 +54,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "user" {
 }
 
 resource "azurerm_role_assignment" "acr_pull" {
-  count = var.enable_acr_role_assignment && var.acr_id != "" ? 1 : 0
+  count = var.enable_acr_role_assignment ? 1 : 0
 
   scope                = var.acr_id
   role_definition_name = "AcrPull"

@@ -29,15 +29,24 @@ else
 fi
 
 # Pull expected names from terraform outputs, if state exists
-if terraform output >/dev/null 2>&1; then
-  RG=$(terraform output -raw resource_group_name 2>/dev/null)
-  VNET=$(terraform output -raw vnet_name 2>/dev/null)
-  VM=$(terraform output -raw vm_name 2>/dev/null)
-  ACR=$(terraform output -raw acr_name 2>/dev/null)
-  AKS=$(terraform output -raw aks_cluster_name 2>/dev/null)
+OUTPUTS=$(terraform output -json 2>/dev/null || echo "{}")
+if [ "$OUTPUTS" != "{}" ] && [ -n "$OUTPUTS" ]; then
+  if command -v jq >/dev/null 2>&1; then
+    RG=$(echo "$OUTPUTS" | jq -r '.resource_group_name.value // empty')
+    VNET=$(echo "$OUTPUTS" | jq -r '.vnet_name.value // empty')
+    VM=$(echo "$OUTPUTS" | jq -r '.vm_name.value // empty')
+    ACR=$(echo "$OUTPUTS" | jq -r '.acr_name.value // empty')
+    AKS=$(echo "$OUTPUTS" | jq -r '.aks_cluster_name.value // empty')
+  else
+    RG=$(echo "$OUTPUTS" | python3 -c "import sys, json; print(json.load(sys.stdin).get('resource_group_name', {}).get('value', ''))" 2>/dev/null || true)
+    VNET=$(echo "$OUTPUTS" | python3 -c "import sys, json; print(json.load(sys.stdin).get('vnet_name', {}).get('value', ''))" 2>/dev/null || true)
+    VM=$(echo "$OUTPUTS" | python3 -c "import sys, json; print(json.load(sys.stdin).get('vm_name', {}).get('value', ''))" 2>/dev/null || true)
+    ACR=$(echo "$OUTPUTS" | python3 -c "import sys, json; print(json.load(sys.stdin).get('acr_name', {}).get('value', ''))" 2>/dev/null || true)
+    AKS=$(echo "$OUTPUTS" | python3 -c "import sys, json; print(json.load(sys.stdin).get('aks_cluster_name', {}).get('value', ''))" 2>/dev/null || true)
+  fi
 else
-  warn "No terraform state/outputs found yet. Run terraform apply first. Falling back to tfvars defaults where possible."
-  RG="" VNET="" VM="" ACR="" AKS=""
+  warn "No terraform state or outputs found yet. Deploy resources first with './scripts/setup.sh' and 'terraform apply tfplan.out'."
+  exit 0
 fi
 
 # 2. Resource Group

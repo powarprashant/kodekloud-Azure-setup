@@ -74,33 +74,45 @@ az account show
 az account set --subscription "<SUBSCRIPTION_ID>"   # only if you have more than one
 ```
 
-## 4. Deployment
+## 4. Independent Deployment Scripts (KodeKloud Sandbox Friendly)
 
+You can run each component **completely separately** based on what you need to practice. Each has its own dedicated Terraform state and will not interfere with the others:
+
+### 1) AKS & ACR: `./aks-setup.sh`
+Provisions Azure Container Registry (ACR) and Azure Kubernetes Service (AKS) with `Standard_B2s` nodes, `kubenet` networking, pre-configured `acr-secret` in Kubernetes, and auto-detects your sandbox resource group:
 ```bash
-git clone <this-repo-url>
-cd kodekloud-azure-setup
-
-az login
-
-terraform init
-terraform fmt -recursive
-terraform validate
-terraform plan
-terraform apply
+./aks-setup.sh            # Provision ACR & AKS
+./aks-setup.sh --status   # Check cluster and node status
+./aks-setup.sh --destroy  # Tear down only AKS & ACR
 ```
 
-Or use the wrapper, which runs the same preflight + init/fmt/validate/plan
-and stops before applying:
+### 2) Ubuntu VM: `./ubuntu-vm.sh`
+Provisions an Ubuntu 22.04 LTS VM (`Standard_B2s`, 2 vCPU, 4GB RAM) with Docker, Docker Compose v2, Git, JQ, Kubectl, Azure CLI, and SonarQube kernel optimizations pre-configured:
+```bash
+./ubuntu-vm.sh            # Provision Ubuntu VM
+./ubuntu-vm.sh --ssh      # SSH directly into the VM
+./ubuntu-vm.sh --status   # Check VM status and public IP
+./ubuntu-vm.sh --destroy  # Tear down only Ubuntu VM
+```
+
+### 3) Windows Server VM: `./windows-vm.sh`
+Provisions a Windows Server 2022 Datacenter VM (`Standard_B2s`, 2 vCPU, 4GB RAM) with RDP (3389) and OpenSSH (22) enabled, an auto-generated secure password, and ready-to-use `.rdp` connection file:
+```bash
+./windows-vm.sh            # Provision Windows VM
+./windows-vm.sh --status   # Check VM status and public IP
+./windows-vm.sh --destroy  # Tear down only Windows VM
+```
+
+---
+
+## 5. All-in-One Deployment (Optional)
+
+If you want to deploy everything at once using the root Terraform stack:
 
 ```bash
 ./scripts/setup.sh
 terraform apply tfplan.out
 ```
-
-All variables have KodeKloud Sandbox-friendly defaults (see
-`variables.tf`), so you can deploy with no `terraform.tfvars` at all. To
-override anything, copy `terraform.tfvars.example` to `terraform.tfvars`
-and uncomment what you need.
 
 ## 5. Verify
 

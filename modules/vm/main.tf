@@ -77,7 +77,7 @@ resource "azurerm_linux_virtual_machine" "this" {
 # requires Microsoft.Authorization/roleAssignments/write, which sandboxes
 # usually block. Off by default - see docs/sandbox-notes.md.
 resource "azurerm_role_assignment" "vm_acr_pull" {
-  count = var.enable_acr_role_assignment && var.acr_id != "" ? 1 : 0
+  count = var.enable_acr_role_assignment ? 1 : 0
 
   scope                = var.acr_id
   role_definition_name = "AcrPull"

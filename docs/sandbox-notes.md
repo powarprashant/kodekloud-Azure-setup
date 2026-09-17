@@ -116,7 +116,7 @@ KodeKloud sandbox specifically** - test with a plan before relying on it.
 
 | Error | Likely cause | What to do |
 |---|---|---|
-| `AuthorizationFailed` | Your sandbox identity lacks a permission for that operation (often `roleAssignments/write` or `resourceGroups/write`) | Check which resource triggered it; if it's the AcrPull role assignment or resource group creation, use the fallbacks above |
+| `AuthorizationFailed` | Your sandbox identity lacks a permission for that operation (often `roleAssignments/write`, `resourceGroups/write`, or provider `*/register/action`) | Check which resource triggered it; if it's provider registration, ensure `resource_provider_registrations = "none"` is set in `providers.tf`. If it's AcrPull or resource group creation, use the fallbacks above |
 | `QuotaExceeded` | Sandbox subscription has a core/resource quota lower than what you requested | Reduce `aks_system_node_count`, avoid `aks_enable_user_node_pool`, or pick a smaller `vm_size`/`aks_vm_size` |
 | `SKUNotAvailable` | The chosen VM size isn't offered in `var.location` for this subscription | Try a different size (`Standard_B1s`/`Standard_B2s` are broadly available) or a different region |
 | `ResourceProviderNotRegistered` | `Microsoft.ContainerService`, `Microsoft.ContainerRegistry`, `Microsoft.Compute`, or `Microsoft.Network` isn't registered on the subscription | Try `az provider register --namespace Microsoft.ContainerService` (etc.) - if that itself fails with `AuthorizationFailed`, the sandbox likely pre-registers what it allows; retry the apply, since many sandboxes auto-register on first use |
