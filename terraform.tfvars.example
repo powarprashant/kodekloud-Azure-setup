@@ -17,7 +17,7 @@
 # vnet_address_space        = ["10.0.0.0/16"]
 # aks_subnet_address_prefix = ["10.0.1.0/24"]
 # vm_subnet_address_prefix  = ["10.0.2.0/24"]
-# ssh_allowed_cidr          = "*"   # restrict to "<your-ip>/32" if possible
+# ssh_allowed_cidr          = "*"   # all inbound traffic allowed by default; restrict to "<your-ip>/32" if needed
 
 # --- VM ---
 # vm_name            = "vm-kodekloud"

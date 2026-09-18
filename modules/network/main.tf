@@ -4,8 +4,8 @@
 #
 # Kept intentionally minimal for KodeKloud Sandbox compatibility:
 # no NAT Gateway, no Azure Firewall, no Bastion, no route tables.
-# Every Azure NSG already denies inbound and allows outbound by
-# default, so the VM's NSG only needs an explicit SSH allow rule.
+# The VM subnet NSG allows all inbound traffic by default for
+# lab/testing flexibility (mirroring AWS sandbox lab security groups).
 #
 ####################################################################
 
@@ -38,13 +38,13 @@ resource "azurerm_network_security_group" "vm" {
   tags                = var.tags
 
   security_rule {
-    name                       = "AllowSSH"
+    name                       = "AllowAllInbound"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
-    protocol                   = "Tcp"
+    protocol                   = "*"
     source_port_range          = "*"
-    destination_port_range     = "22"
+    destination_port_range     = "*"
     source_address_prefix      = var.ssh_allowed_cidr
     destination_address_prefix = "*"
   }

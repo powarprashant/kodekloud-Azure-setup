@@ -158,6 +158,7 @@ echo -e "${BOLD}Resource Group:${NC}      ${RG_NAME}"
 echo -e "${BOLD}VM Name:${NC}             ${VM_NAME}"
 echo -e "${BOLD}VM Size:${NC}             Standard_B2s (2 vCPU, 4GB RAM)"
 echo -e "${BOLD}Public IP:${NC}           ${PUBLIC_IP}"
+echo -e "${BOLD}Inbound Security:${NC}    All Traffic Allowed (0.0.0.0/0 - Any Port/Protocol)"
 echo -e "${BOLD}SSH User:${NC}            azureuser"
 echo -e "${BOLD}Private Key:${NC}         ${REPO_ROOT}/${VM_NAME}_key.pem"
 echo

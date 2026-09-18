@@ -40,7 +40,8 @@ variable "vm_subnet_address_prefix" {
 
 variable "ssh_allowed_cidr" {
   type        = string
-  description = "CIDR allowed to reach the VM subnet over SSH (port 22)."
+  description = "CIDR allowed to reach the VM subnet inbound (defaults to '*' allowing all traffic)."
+  default     = "*"
 }
 
 variable "tags" {

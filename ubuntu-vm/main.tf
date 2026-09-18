@@ -81,49 +81,13 @@ resource "azurerm_network_security_group" "vm_nsg" {
   tags                = local.common_tags
 
   security_rule {
-    name                       = "AllowSSH"
+    name                       = "AllowAllInbound"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
-    protocol                   = "Tcp"
+    protocol                   = "*"
     source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefix      = var.ssh_allowed_cidr
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "AllowHTTP"
-    priority                   = 110
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "80"
-    source_address_prefix      = var.ssh_allowed_cidr
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "AllowHTTPS"
-    priority                   = 120
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "443"
-    source_address_prefix      = var.ssh_allowed_cidr
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "AllowDevOpsPorts"
-    priority                   = 130
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_ranges    = ["3000", "5000", "8080", "9000"]
+    destination_port_range     = "*"
     source_address_prefix      = var.ssh_allowed_cidr
     destination_address_prefix = "*"
   }

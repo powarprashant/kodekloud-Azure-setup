@@ -18,6 +18,8 @@ locals {
     Start-Service sshd
     Set-Service -Name sshd -StartupType 'Automatic'
     New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+    # Allow all inbound traffic in Windows Firewall for lab testing
+    Set-NetFirewallProfile -Profile Domain,Public,Private -DefaultInboundAction Allow
     </powershell>
   EOF
 }
@@ -59,37 +61,13 @@ resource "azurerm_network_security_group" "vm_nsg" {
   tags                = local.common_tags
 
   security_rule {
-    name                       = "AllowRDP"
+    name                       = "AllowAllInbound"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
-    protocol                   = "Tcp"
+    protocol                   = "*"
     source_port_range          = "*"
-    destination_port_range     = "3389"
-    source_address_prefix      = var.rdp_allowed_cidr
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "AllowSSH"
-    priority                   = 110
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefix      = var.rdp_allowed_cidr
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "AllowWinRM"
-    priority                   = 120
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_ranges    = ["5985", "5986"]
+    destination_port_range     = "*"
     source_address_prefix      = var.rdp_allowed_cidr
     destination_address_prefix = "*"
   }

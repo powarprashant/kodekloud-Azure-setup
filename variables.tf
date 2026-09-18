@@ -88,7 +88,7 @@ variable "vm_subnet_address_prefix" {
 
 variable "ssh_allowed_cidr" {
   type        = string
-  description = "CIDR allowed to reach the VM over SSH (port 22). Restrict this to your own IP/32 where possible."
+  description = "CIDR allowed to reach the VM inbound. Defaults to '*' (all inbound traffic allowed for sandbox labs)."
   default     = "*"
 }
 

@@ -78,7 +78,7 @@ variable "vm_subnet_cidr" {
 
 variable "ssh_allowed_cidr" {
   type        = string
-  description = "CIDR allowed to connect to SSH/ports."
+  description = "CIDR allowed to connect to the VM inbound (defaults to '*' allowing all traffic)."
   default     = "*"
 }
 

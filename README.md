@@ -24,19 +24,19 @@ decision visible in `variables.tf` rather than hidden in code.
                     |                                 |
               AKS Subnet                         VM Subnet
                     |                                 |
-                   AKS                          Azure VM (Ubuntu)
-                    |                             + NSG (SSH only)
-             +------+------+                      + Public IP
-             |             |
-        System Node    User Node Pool
-           Pool           (optional)
-             |
-             +------------------+
-                                |
-                               ACR  <--- AcrPull role assignment (optional)
-                                |         or admin-credential imagePullSecret
-                            Container
-                             Images
+                    AKS                          Azure VM (Ubuntu)
+                     |                             + NSG (All Inbound Allowed)
+              +------+------+                      + Public IP
+              |             |
+         System Node    User Node Pool
+            Pool           (optional)
+              |
+              +------------------+
+                                 |
+                                ACR  <--- AcrPull role assignment (optional)
+                                 |         or admin-credential imagePullSecret
+                             Container
+                              Images
 ```
 
 ### What gets created
@@ -45,7 +45,7 @@ decision visible in `variables.tf` rather than hidden in code.
 |---|---|---|
 | Resource Group | Required | **Reused** from the sandbox by default, not created (`create_resource_group=false`) |
 | Virtual Network + 2 Subnets | Required | One subnet for AKS, one for the VM |
-| Network Security Group | Required | SSH (22) inbound allow on the VM subnet only |
+| Network Security Group | Required | **All inbound traffic allowed** (`*` protocol, all ports) on the VM subnet for sandbox lab testing |
 | Public IP | Required (VM) | Can be disabled via `vm_enable_public_ip=false` |
 | Linux VM (Ubuntu 22.04) | Required | `Standard_B1s` by default, with a `SystemAssigned` managed identity |
 | Azure Container Registry | Required | Basic SKU |
@@ -87,7 +87,7 @@ Provisions Azure Container Registry (ACR) and Azure Kubernetes Service (AKS) wit
 ```
 
 ### 2) Ubuntu VM: `./ubuntu-vm.sh`
-Provisions an Ubuntu 22.04 LTS VM (`Standard_B2s`, 2 vCPU, 4GB RAM) with Docker, Docker Compose v2, Git, JQ, Kubectl, Azure CLI, and SonarQube kernel optimizations pre-configured:
+Provisions an Ubuntu 22.04 LTS VM (`Standard_B2s`, 2 vCPU, 4GB RAM) with **All Inbound Traffic allowed** in NSG (all ports/protocols open for lab and testing flexibility), with Docker, Docker Compose v2, Git, JQ, Kubectl, Azure CLI, and SonarQube kernel optimizations pre-configured:
 ```bash
 ./ubuntu-vm.sh            # Provision Ubuntu VM
 ./ubuntu-vm.sh --ssh      # SSH directly into the VM
@@ -96,7 +96,7 @@ Provisions an Ubuntu 22.04 LTS VM (`Standard_B2s`, 2 vCPU, 4GB RAM) with Docker,
 ```
 
 ### 3) Windows Server VM: `./windows-vm.sh`
-Provisions a Windows Server 2022 Datacenter VM (`Standard_B2s` or `Standard_D2s_v3`) with RDP (3389) and OpenSSH (22) enabled, auto-generated secure password, and ready-to-use `.rdp` connection shortcut:
+Provisions a Windows Server 2022 Datacenter VM (`Standard_B2s` or `Standard_D2s_v3`) with **All Inbound Traffic allowed** in NSG and Windows Firewall (RDP 3389, OpenSSH 22, WinRM, and all web/app ports open for lab testing), auto-generated secure password, and ready-to-use `.rdp` connection shortcut:
 ```bash
 ./windows-vm.sh            # Provision Windows VM
 ./windows-vm.sh --status   # Check VM status and public IP

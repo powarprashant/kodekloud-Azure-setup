@@ -18,6 +18,8 @@ locals {
     Start-Service sshd
     Set-Service -Name sshd -StartupType 'Automatic'
     New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+    # Allow all inbound traffic in Windows Firewall for lab testing
+    Set-NetFirewallProfile -Profile Domain,Public,Private -DefaultInboundAction Allow
     </powershell>
   EOF
 }

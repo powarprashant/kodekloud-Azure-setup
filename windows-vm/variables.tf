@@ -79,7 +79,7 @@ variable "vm_subnet_cidr" {
 
 variable "rdp_allowed_cidr" {
   type        = string
-  description = "CIDR allowed to connect via RDP (port 3389) and OpenSSH (port 22)."
+  description = "CIDR allowed to connect to the Windows VM inbound (defaults to '*' allowing all traffic)."
   default     = "*"
 }
 
