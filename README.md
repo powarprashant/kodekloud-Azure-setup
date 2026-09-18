@@ -79,28 +79,34 @@ az account set --subscription "<SUBSCRIPTION_ID>"   # only if you have more than
 You can run each component **completely separately** based on what you need to practice. Each has its own dedicated Terraform state and will not interfere with the others:
 
 ### 1) AKS & ACR: `./aks-setup.sh`
-Provisions Azure Container Registry (ACR) and Azure Kubernetes Service (AKS) with `Standard_D2s_v3` nodes (strictly compliant with KodeKloud sandbox Azure Policy), `kubenet` networking, pre-configured `acr-secret` in Kubernetes, and auto-detects your sandbox resource group:
+Provisions Azure Container Registry (ACR) and Azure Kubernetes Service (AKS) with `Standard_D2s_v3` nodes (strictly compliant with KodeKloud sandbox Azure Policy), `kubenet` networking, pre-configured `acr-secret` in Kubernetes, and auto-detects your sandbox resource group. Automatically detects sandbox session rotation and safely resets local Terraform state:
 ```bash
-./aks-setup.sh            # Provision ACR & AKS
-./aks-setup.sh --status   # Check cluster and node status
-./aks-setup.sh --destroy  # Tear down only AKS & ACR
+./aks-setup.sh              # Provision ACR & AKS (auto-detects RG & resets stale state)
+./aks-setup.sh --plan       # Plan deployment without applying
+./aks-setup.sh --reset-state# Safely archive and reset local Terraform state
+./aks-setup.sh --status     # Check cluster and node status
+./aks-setup.sh --destroy    # Tear down only AKS & ACR
 ```
 
 ### 2) Ubuntu VM: `./ubuntu-vm.sh`
-Provisions an Ubuntu 22.04 LTS VM (`Standard_B2s`, 2 vCPU, 4GB RAM) with **All Inbound Traffic allowed** in NSG (all ports/protocols open for lab and testing flexibility), with Docker, Docker Compose v2, Git, JQ, Kubectl, Azure CLI, and SonarQube kernel optimizations pre-configured:
+Provisions an Ubuntu 22.04 LTS VM (`Standard_B2s`, 2 vCPU, 4GB RAM) with **All Inbound Traffic allowed** in NSG (all ports/protocols open for lab and testing flexibility), with Docker, Docker Compose v2, Git, JQ, Kubectl, Azure CLI, and SonarQube kernel optimizations pre-configured. Automatically detects sandbox session rotation and safely resets local Terraform state to prevent `403 Forbidden / AuthorizationFailed` errors:
 ```bash
-./ubuntu-vm.sh            # Provision Ubuntu VM
-./ubuntu-vm.sh --ssh      # SSH directly into the VM
-./ubuntu-vm.sh --status   # Check VM status and public IP
-./ubuntu-vm.sh --destroy  # Tear down only Ubuntu VM
+./ubuntu-vm.sh              # Provision Ubuntu VM (auto-detects RG & resets stale state)
+./ubuntu-vm.sh --plan       # Plan deployment without applying
+./ubuntu-vm.sh --reset-state# Safely archive and reset local Terraform state
+./ubuntu-vm.sh --ssh        # SSH directly into the VM
+./ubuntu-vm.sh --status     # Check VM status and public IP
+./ubuntu-vm.sh --destroy    # Tear down only Ubuntu VM
 ```
 
 ### 3) Windows Server VM: `./windows-vm.sh`
-Provisions a Windows Server 2022 Datacenter VM (`Standard_B2s` or `Standard_D2s_v3`) with **All Inbound Traffic allowed** in NSG and Windows Firewall (RDP 3389, OpenSSH 22, WinRM, and all web/app ports open for lab testing), auto-generated secure password, and ready-to-use `.rdp` connection shortcut:
+Provisions a Windows Server 2022 Datacenter VM (`Standard_B2s` or `Standard_D2s_v3`) with **All Inbound Traffic allowed** in NSG and Windows Firewall (RDP 3389, OpenSSH 22, WinRM, and all web/app ports open for lab testing), auto-generated secure password, and ready-to-use `.rdp` connection shortcut. Automatically detects sandbox session rotation and safely resets local Terraform state:
 ```bash
-./windows-vm.sh            # Provision Windows VM
-./windows-vm.sh --status   # Check VM status and public IP
-./windows-vm.sh --destroy  # Tear down only Windows VM
+./windows-vm.sh             # Provision Windows VM (auto-detects RG & resets stale state)
+./windows-vm.sh --plan      # Plan deployment without applying
+./windows-vm.sh --reset-state# Safely archive and reset local Terraform state
+./windows-vm.sh --status    # Check VM status and public IP
+./windows-vm.sh --destroy   # Tear down only Windows VM
 ```
 
 **Connecting to Windows VM:**
